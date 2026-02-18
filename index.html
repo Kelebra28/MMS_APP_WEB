@@ -8,14 +8,9 @@
     :root{
       --bg:#0b0b0d;
       --panel:#111116;
-      --panel2:#0f0f14;
       --text:#f2f2f3;
       --muted:#a7a7ad;
       --line:#24242c;
-      --accent:#ffffff;
-      --good:#7CFFB2;
-      --warn:#FFD37C;
-      --bad:#FF7C7C;
       --radius:16px;
       --shadow: 0 10px 30px rgba(0,0,0,.45);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -37,6 +32,7 @@
       padding:28px 18px 60px;
     }
 
+    /* TOPBAR */
     .topbar{
       display:flex;
       gap:14px;
@@ -55,11 +51,13 @@
 
     .brand{
       display:flex; align-items:center; gap:12px;
+      min-width: 220px;
     }
     .logo{
       width:42px; height:42px; border-radius:14px;
       background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.25));
       box-shadow: 0 10px 25px rgba(255,255,255,.08);
+      flex: 0 0 auto;
     }
     .brand h1{
       font-size:14px; margin:0; letter-spacing:.4px; font-weight:650;
@@ -69,8 +67,13 @@
     }
 
     .actions{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
+
     .btn{
       appearance:none;
       border:1px solid var(--line);
@@ -82,7 +85,8 @@
       font-weight:600;
       letter-spacing:.2px;
       transition:.15s ease;
-      display:inline-flex; align-items:center; gap:8px;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      min-height: 40px;
     }
     .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.06); }
     .btn.primary{
@@ -95,6 +99,7 @@
       background: rgba(255, 124, 124, .14);
       border-color: rgba(255, 124, 124, .35);
     }
+
     .pill{
       font-family:var(--mono);
       font-size:11px;
@@ -106,6 +111,7 @@
       white-space:nowrap;
     }
 
+    /* LAYOUT GRID (desktop + tablet landscape) */
     .grid{
       display:grid;
       grid-template-columns: 360px 1fr;
@@ -113,17 +119,14 @@
       margin-top:16px;
     }
 
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .topbar{ position:relative; top:auto; }
-    }
-
+    /* CARD */
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
+      min-width: 0;
     }
 
     .card .head{
@@ -160,7 +163,9 @@
       color:var(--text);
       outline:none;
       transition:.15s ease;
+      min-height: 44px; /* táctil */
     }
+    textarea{ min-height: 110px; resize: vertical; }
     .input:focus, .select:focus, textarea:focus{
       border-color: rgba(255,255,255,.25);
       box-shadow: 0 0 0 4px rgba(255,255,255,.06);
@@ -200,9 +205,7 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap:10px;
     }
-    @media (max-width: 980px){
-      .jobTypes{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
+
     .jobCard{
       border:1px solid var(--line);
       border-radius:16px;
@@ -210,6 +213,7 @@
       background: rgba(0,0,0,.22);
       cursor:pointer;
       transition:.15s ease;
+      min-width: 0;
     }
     .jobCard:hover{ transform: translateY(-1px); background: rgba(255,255,255,.04); }
     .jobCard.active{
@@ -223,9 +227,6 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:10px;
-    }
-    @media (max-width: 720px){
-      .formGrid{ grid-template-columns: 1fr; }
     }
 
     .sectionTitle{
@@ -253,8 +254,9 @@
       border-radius:14px;
       padding:10px 12px;
       background: rgba(255,255,255,.03);
+      min-height: 44px;
     }
-    .check input{ transform: scale(1.1); }
+    .check input{ transform: scale(1.15); }
 
     .hint{
       font-size:12px;
@@ -279,7 +281,7 @@
       transition:.15s ease;
     }
     .row:hover{ background: rgba(255,255,255,.05); transform: translateY(-1px); }
-    .row .left{ display:flex; flex-direction:column; gap:4px; }
+    .row .left{ display:flex; flex-direction:column; gap:4px; min-width:0; }
     .row .right{ text-align:right; font-family:var(--mono); font-size:11px; color:var(--muted); }
     .tag{
       display:inline-flex;
@@ -290,9 +292,59 @@
       font-size:11px;
       color: var(--muted);
       width: fit-content;
+      flex: 0 0 auto;
     }
 
-    /* Modo impresión: solo mostramos el “preview” */
+    /* ===========================
+       RESPONSIVE BREAKPOINTS
+       =========================== */
+
+    /* Tablet portrait + pantallas medianas */
+    @media (max-width: 980px){
+      .app{ padding:18px 14px 44px; }
+      .grid{ grid-template-columns: 1fr; }
+      .topbar{ position:relative; top:auto; }
+      .jobTypes{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .brand{ min-width: 0; }
+    }
+
+    /* Tablet landscape específico (tipo iPad horizontal) */
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape){
+      .grid{
+        grid-template-columns: 330px 1fr;
+      }
+      .jobTypes{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .list{ max-height: 320px; }
+      .history{ max-height: 300px; }
+    }
+
+    /* Celular */
+    @media (max-width: 560px){
+      .topbar{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+      }
+      .actions{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:10px;
+        justify-content:stretch;
+      }
+      #sessionPill{
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        text-align:center;
+      }
+      .btn{ width:100%; }
+      .jobTypes{ grid-template-columns: 1fr; }
+      .formGrid{ grid-template-columns: 1fr; }
+      .checks{ grid-template-columns: 1fr; }
+      .list{ max-height: 260px; }
+      .history{ max-height: 240px; }
+    }
+
+    /* Modo impresión */
     @media print{
       body{ background:#fff; }
       .topbar, .grid, .no-print{ display:none !important; }
@@ -330,6 +382,7 @@
           <p>Negro elegante • rápido • sin complicaciones</p>
         </div>
       </div>
+
       <div class="actions">
         <span class="pill" id="sessionPill">Empleado: — • Trabajo: —</span>
         <button class="btn" id="btnNew">Nuevo</button>
@@ -340,7 +393,7 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT: Empleados + Historial -->
+      <!-- LEFT -->
       <div class="card">
         <div class="head">
           <h2>Empleado</h2>
@@ -358,11 +411,12 @@
             <span class="pill" id="historyCount">—</span>
           </div>
           <div class="history" id="historyList"></div>
-          <p class="hint">Tip: da click en un registro del historial para cargarlo y reimprimirlo.</p>
+
+          <p class="hint">Tip: toca un registro del historial para cargarlo y reimprimirlo.</p>
         </div>
       </div>
 
-      <!-- RIGHT: Tipo de trabajo + Form -->
+      <!-- RIGHT -->
       <div class="card">
         <div class="head">
           <h2>Orden</h2>
@@ -378,13 +432,13 @@
           <div id="formArea"></div>
 
           <p class="hint">
-            Guardado local (en esta compu). Si luego quieres: exportar a Excel / Google Sheets, o mandar por WhatsApp en PDF, se agrega.
+            Guardado local (en esta compu). Si luego quieres: exportar a Excel/Sheets o PDF automático, lo agregamos.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- SOLO PARA IMPRESIÓN -->
+    <!-- PRINT -->
     <div class="printArea" id="printArea">
       <div class="printCard">
         <h2 id="pTitle">Orden de Trabajo</h2>
@@ -398,9 +452,6 @@
   </div>
 
   <script>
-    // ============
-    // CONFIG
-    // ============
     const EMPLOYEES = [
       { id: "E01", name: "Empleado 1" },
       { id: "E02", name: "Empleado 2" },
@@ -410,33 +461,14 @@
     ];
 
     const JOB_TYPES = [
-      {
-        key: "acabado",
-        title: "Acabado",
-        desc: "Acabado + Alce + Cantidad + Empacado + Acabado final"
-      },
-      {
-        key: "suaje",
-        title: "Suaje",
-        desc: "Suajista + Original + Trazo/Dibujo + Sacabocado/Perforado..."
-      },
-      {
-        key: "impresion",
-        title: "Impresión",
-        desc: "Prensista + Tiro + Frente/Vuelta + Placas/Tintas/Barniz"
-      },
-      {
-        key: "maquina_suaje",
-        title: "Máquina de suaje",
-        desc: "Formato rápido: Tiro + Arreglos + Folio + Observaciones"
-      }
+      { key: "acabado", title: "Acabado", desc: "Acabado + Alce + Cantidad + Empacado + Acabado final" },
+      { key: "suaje", title: "Suaje", desc: "Suajista + Original + Trazo/Dibujo + Sacabocado/Perforado..." },
+      { key: "impresion", title: "Impresión", desc: "Prensista + Tiro + Frente/Vuelta + Placas/Tintas/Barniz" },
+      { key: "maquina_suaje", title: "Máquina de suaje", desc: "Formato rápido: Tiro + Arreglos + Folio + Observaciones" }
     ];
 
     const LS_KEY = "taller_orders_v1";
 
-    // ============
-    // STATE
-    // ============
     let state = {
       employee: null,
       jobType: null,
@@ -447,34 +479,23 @@
         fecha: "",
         trabajo: "",
         cliente: "",
-        // por tipo se guardan más campos
         data: {}
       }
     };
 
-    // ============
-    // HELPERS
-    // ============
     const $ = (sel) => document.querySelector(sel);
 
     function uid(){
-      // Folio tipo: OT-2026-02-18-183045
       const d = new Date();
       const pad = (n)=> String(n).padStart(2,"0");
       return `OT-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
     }
 
     function loadAll(){
-      try{
-        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-      }catch{
-        return [];
-      }
+      try{ return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+      catch{ return []; }
     }
-
-    function saveAll(list){
-      localStorage.setItem(LS_KEY, JSON.stringify(list));
-    }
+    function saveAll(list){ localStorage.setItem(LS_KEY, JSON.stringify(list)); }
 
     function resetOrder(){
       state.jobType = null;
@@ -499,17 +520,14 @@
       $("#sessionPill").textContent = `Empleado: ${emp} • Trabajo: ${job}`;
     }
 
-    // ============
-    // EMPLOYEES UI
-    // ============
     function renderEmployees(filter=""){
       const list = $("#employeeList");
       const f = filter.trim().toLowerCase();
       const items = EMPLOYEES.filter(e => e.name.toLowerCase().includes(f) || e.id.toLowerCase().includes(f));
 
       $("#employeeCount").textContent = `${items.length} / ${EMPLOYEES.length}`;
-
       list.innerHTML = "";
+
       items.forEach(emp=>{
         const div = document.createElement("div");
         div.className = "item";
@@ -529,9 +547,6 @@
       });
     }
 
-    // ============
-    // JOB TYPES UI
-    // ============
     function renderJobTypes(){
       const wrap = $("#jobTypes");
       wrap.innerHTML = "";
@@ -541,7 +556,6 @@
         div.innerHTML = `<h3>${j.title}</h3><p>${j.desc}</p>`;
         div.onclick = () => {
           state.jobType = j.key;
-          // inicializar data por tipo (para evitar undefined)
           state.order.data = buildDefaultData(j.key, state.order.data);
           renderJobTypes();
           renderForm();
@@ -552,56 +566,36 @@
     }
 
     function buildDefaultData(type, prev={}){
-      // conserva prev si ya había algo
       if(type === "acabado"){
         return Object.assign({
-          acabado: "",
-          alce: "",
-          cantidad: "",
-          empacado: "",
+          acabado: "", alce: "", cantidad: "", empacado: "",
           final: { cajas: false, diurex:false, pegamento:false, especiales:false },
           observaciones: ""
         }, prev);
       }
       if(type === "suaje"){
         return Object.assign({
-          suajista: "",
-          original: "",
-          trazo: "",
-          sacabocado: "",
-          perforado: "",
-          figura: "",
-          replecado: "",
+          suajista: "", original: "", trazo: "",
+          sacabocado: "", perforado: "", figura: "", replecado: "",
           observaciones: ""
         }, prev);
       }
       if(type === "impresion"){
         return Object.assign({
-          prensista: "",
-          tiro: "",
-          frenteVuelta: "",
-          placas: "",
-          tintas: "",
-          barniz: "",
-          tEspeciales: "",
+          prensista: "", tiro: "", frenteVuelta: "",
+          placas: "", tintas: "", barniz: "", tEspeciales: "",
           observaciones: ""
         }, prev);
       }
       if(type === "maquina_suaje"){
         return Object.assign({
-          prensista: "",
-          tiro: "",
-          arreglos: "",
-          folioInterno: "",
+          prensista: "", tiro: "", arreglos: "", folioInterno: "",
           observaciones: ""
         }, prev);
       }
       return prev;
     }
 
-    // ============
-    // FORMS
-    // ============
     function baseFieldsHTML(){
       return `
         <div class="formGrid">
@@ -654,15 +648,20 @@
         .replaceAll("'","&#039;");
     }
 
+    function check(key, label){
+      return `
+        <label class="check">
+          <input type="checkbox" data-check="${key}">
+          <span>${label}</span>
+        </label>
+      `;
+    }
+
     function renderForm(){
       const area = $("#formArea");
 
       if(!state.jobType){
-        area.innerHTML = `
-          <div class="hint">
-            Selecciona un tipo de trabajo para mostrar el formato.
-          </div>
-        `;
+        area.innerHTML = `<div class="hint">Selecciona un tipo de trabajo para mostrar el formato.</div>`;
         return;
       }
 
@@ -759,7 +758,7 @@
 
       // bind inputs
       area.querySelectorAll("[data-bind]").forEach(el=>{
-        el.addEventListener("input", (e)=>{
+        el.addEventListener("input", ()=>{
           const path = el.getAttribute("data-bind");
           const val = el.value;
 
@@ -778,13 +777,13 @@
       // bind checks
       area.querySelectorAll("input[type='checkbox'][data-check]").forEach(el=>{
         el.addEventListener("change", ()=>{
-          const key = el.getAttribute("data-check"); // final.cajas
+          const key = el.getAttribute("data-check");
           const [a,b] = key.split(".");
           state.order.data[a][b] = el.checked;
         });
       });
 
-      // set checkbox initial values
+      // initial checks
       area.querySelectorAll("input[type='checkbox'][data-check]").forEach(el=>{
         const key = el.getAttribute("data-check");
         const [a,b] = key.split(".");
@@ -792,24 +791,12 @@
       });
     }
 
-    function check(key, label){
-      return `
-        <label class="check">
-          <input type="checkbox" data-check="${key}">
-          <span>${label}</span>
-        </label>
-      `;
-    }
-
-    // ============
-    // HISTORY
-    // ============
     function renderHistory(){
       const list = $("#historyList");
       const all = loadAll().sort((a,b)=> (b.createdAt||"").localeCompare(a.createdAt||""));
       $("#historyCount").textContent = `${all.length}`;
-
       list.innerHTML = "";
+
       all.slice(0, 40).forEach(o=>{
         const div = document.createElement("div");
         div.className = "row";
@@ -817,7 +804,9 @@
           <div class="left">
             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
               <span class="tag">${o.jobTypeTitle}</span>
-              <span style="font-weight:650;">${o.trabajo || "—"}</span>
+              <span style="font-weight:650; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width: 260px;">
+                ${o.trabajo || "—"}
+              </span>
             </div>
             <div style="color:var(--muted); font-size:12px;">
               Cliente: ${o.cliente || "—"} • Empleado: ${o.employee?.name || "—"}
@@ -829,7 +818,6 @@
           </div>
         `;
         div.onclick = () => {
-          // cargar
           state.employee = o.employee || null;
           state.jobType = o.jobTypeKey || null;
           state.order = {
@@ -855,9 +843,6 @@
       }
     }
 
-    // ============
-    // SAVE / PRINT
-    // ============
     function validate(){
       if(!state.employee) return "Selecciona un empleado.";
       if(!state.jobType) return "Selecciona un tipo de trabajo.";
@@ -885,7 +870,6 @@
         data: state.order.data
       };
 
-      // upsert por folio
       const idx = all.findIndex(x=>x.folio===payload.folio);
       if(idx >= 0) all[idx] = payload;
       else all.push(payload);
@@ -897,26 +881,23 @@
 
     function buildPrint(){
       const job = JOB_TYPES.find(j=>j.key===state.jobType);
-      $("#pTitle").textContent = `Orden de Trabajo • ${job?.title || "—"}`;
+      document.getElementById("pTitle").textContent = `Orden de Trabajo • ${job?.title || "—"}`;
 
       const meta = [
         `Folio: ${state.order.folio}`,
         `Fecha: ${state.order.fecha || "—"}`,
-        `Empleado: ${state.employee ? `${state.employee.name} (${state.employee.id})` : "—"}`,
+        `Empleado: ${state.employee ? `${state.employee.name} (${state.employee.id})` : "—"}`
       ].join(" • ");
-      $("#pMeta").textContent = meta;
+      document.getElementById("pMeta").textContent = meta;
 
-      const grid = $("#pGrid");
+      const grid = document.getElementById("pGrid");
       grid.innerHTML = "";
 
       const pairs = [];
-
-      // base
       pairs.push(["Número", state.order.numero || "—"]);
       pairs.push(["Trabajo", state.order.trabajo || "—"]);
       pairs.push(["Cliente", state.order.cliente || "—"]);
 
-      // type-specific
       const d = state.order.data || {};
       if(state.jobType==="acabado"){
         pairs.push(["Acabado", d.acabado || "—"]);
@@ -958,50 +939,38 @@
       pairs.forEach(([k,v])=>{
         const el = document.createElement("div");
         el.className = "printLine";
-        el.innerHTML = `<b>${k}:</b> ${escapeHtml(v)}`;
+        el.innerHTML = `<b>${escapeHtml(k)}:</b> ${escapeHtml(v)}`;
         grid.appendChild(el);
       });
 
-      $("#pNotes").innerHTML = `<div class="printLine"><b>Observaciones:</b> ${escapeHtml(d.observaciones || "—")}</div>`;
+      document.getElementById("pNotes").innerHTML =
+        `<div class="printLine"><b>Observaciones:</b> ${escapeHtml(d.observaciones || "—")}</div>`;
     }
 
-    // ============
-    // EVENTS
-    // ============
-    $("#employeeSearch").addEventListener("input", (e)=> renderEmployees(e.target.value));
-
-    $("#btnSave").addEventListener("click", saveOrder);
-
-    $("#btnNew").addEventListener("click", ()=>{
-      resetOrder();
-      alert("Listo. Nueva orden ✅");
-    });
-
-    $("#btnClear").addEventListener("click", ()=>{
+    document.getElementById("employeeSearch").addEventListener("input", (e)=> renderEmployees(e.target.value));
+    document.getElementById("btnSave").addEventListener("click", saveOrder);
+    document.getElementById("btnNew").addEventListener("click", ()=> { resetOrder(); alert("Listo. Nueva orden ✅"); });
+    document.getElementById("btnClear").addEventListener("click", ()=>{
       const ok = confirm("¿Seguro que quieres borrar TODO el historial de esta compu?");
       if(!ok) return;
       saveAll([]);
       renderHistory();
       alert("Historial borrado.");
     });
-
-    $("#btnPrint").addEventListener("click", ()=>{
+    document.getElementById("btnPrint").addEventListener("click", ()=>{
       const err = validate();
       if(err){ alert(err); return; }
       buildPrint();
       window.print();
     });
 
-    // ============
-    // INIT
-    // ============
     function init(){
       state.employee = null;
       resetOrder();
       renderEmployees("");
       renderHistory();
       renderSession();
-      $("#orderPill").textContent = `Folio: ${state.order.folio}`;
+      document.getElementById("orderPill").textContent = `Folio: ${state.order.folio}`;
     }
     init();
   </script>
